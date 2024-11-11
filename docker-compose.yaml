@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-db
+    environment:
+      - ORACLE_PASSWORD=password
+      - ORACLE_DATABASE=tasksdb
+      - APP_USER=filab
+      - APP_USER_PASSWORD=passwrd
+    ports:
+      - "1521:1521"
+    volumes:
+      - ./sql:/container-entrypoint-initdb.d
+  oracle-db-test:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: oracle-db-test
+    environment:
+      - ORACLE_PASSWORD=password
+      - ORACLE_DATABASE=tasksdb
+      - APP_USER=filab
+      - APP_USER_PASSWORD=passwrd
+    ports:
+      - "1522:1521"
+    volumes:
+      - ./sql:/container-entrypoint-initdb.d
+  redis:
+    image: redis:7-alpine
+    restart: always
+    container_name: redis
+    ports:
+      - 6379:6379
+
+# volumes:
+#   oracle-data:
